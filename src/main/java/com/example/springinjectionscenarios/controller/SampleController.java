@@ -9,11 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/sample")
 public class SampleController {
-    //  Don't use this
-    //  The dependencies this way are opaque
-    //  Thus, this class is not testable
-    @Autowired
+    //  Dependency as a field, but exposes a setter
     private VehicleService vehicleService;
+
+    //  Setter injection
+    //  Still, the developer has to remember to set the field
+    //  But the class itself is more transparent
+    //  There is still a risk of initializing the class without proper
+    //  dependencies, particularly in unit testing
+    @Autowired  //  autowired is required as of this version
+    public void setVehicleService(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
     @GetMapping
     public String get() {
